@@ -1,6 +1,8 @@
 const { JSDOM } = require('jsdom');
 const fetch = require('fetch-retry');
 
+const imageBaseUrl = 'https://www.johndeerestore.com'
+
 const fetchProductData = async (product, { baseUrl }) => {
     const url = `${baseUrl}${product.sku}`;
 
@@ -19,7 +21,11 @@ const fetchProductData = async (product, { baseUrl }) => {
 
         const imageSrc = document.querySelector('img.lazyOwl').getAttribute('data-src');
 
-        const image = imageSrc.split('?')[0];
+        let image = imageSrc.split('?')[0];
+
+        if (image.indexOf('http') === -1) {
+            image = `${imageBaseUrl}${image}`
+        }
 
         const description = document.querySelector('.productDescriptionText')
             .innerHTML;
